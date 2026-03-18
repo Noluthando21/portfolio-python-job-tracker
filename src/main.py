@@ -57,7 +57,8 @@ def menu():
     print("\nJob Tracker")
     print("1. Add job")
     print("2. List jobs")
-    print("3. Exit")
+    print("3. Update job status")
+    print("4. Exit")
 
 
 def main():
@@ -72,9 +73,29 @@ def main():
         elif choice == "2":
             list_jobs()
         elif choice == "3":
+            update_job_status()
+        elif choice == "4":
             break
         else:
             print("Invalid option")
+
+def update_job_status():
+    job_id = input("Enter job ID to update: ")
+    new_status = input("New status: ")
+
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE jobs SET status = ? WHERE id = ?",
+        (new_status, job_id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    print("Job updated!")
+ 
 
 
 if __name__ == "__main__":
